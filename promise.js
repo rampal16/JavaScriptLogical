@@ -1,8 +1,4 @@
-const pro1 = new Promise((resolve, reject) => resolve("Hellow"))
-pro1.then(res => console.log(res))
-
 function MyNewPromise(cb){
-    debugger;
     let value, error;
     let submitted=false, rejected=false, called=false;
     let onResolve, onReject;
@@ -57,5 +53,26 @@ function MyNewPromise(cb){
     
 }
 
-const pro2 = new MyNewPromise((resolve, reject) => resolve("My Hello"))
-pro2.then(res => console.log(res))
+/*******************************************************************/
+
+Promise.myAll = function(promises) {
+    return new Promise((resolve, reject) => {
+        let completedCount = 0;
+        let result = [];
+        
+        if(promises.length === 0) resolve([])
+        
+        promises.forEach((promise, index) => {
+            Promise.resolve(promise).then(value => {
+                result[index] = value;
+                completedCount++;
+                
+                if(completedCount === promises.length) {
+                    resolve(result);
+                }
+                
+            })
+            
+        })
+    })
+}
